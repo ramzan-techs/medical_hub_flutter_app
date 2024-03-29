@@ -7,9 +7,12 @@ import 'package:medical_hub/api/apis.dart';
 import 'package:medical_hub/main.dart';
 import 'package:medical_hub/screens/auth/login/forget_password_screen.dart';
 import 'package:medical_hub/screens/auth/login/validation_hub.dart';
+
 import 'package:medical_hub/screens/auth/signup/user_signup.dart';
+import 'package:medical_hub/screens/custom_widgets.dart';
 import 'package:medical_hub/screens/home_screen.dart';
 
+import '../signup/email_verification_screen.dart';
 import 'widgets.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -50,18 +53,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (result['userCredential'] != null) {
       // Successfully signed in, handle navigation or other actions
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+      if (APIs.user.emailVerified) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+      } else {
+        await APIs.sendVerificationEmail();
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (_) => const EmailVerificationScreen()));
+      }
     } else {
       // Handle sign in errors
       String errorMessage = result['error'];
       // Show error message to the user
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
-          duration: const Duration(seconds: 3),
-        ),
-      );
+      CustomWidget.showSnackBar(context, errorMessage);
     }
   }
 

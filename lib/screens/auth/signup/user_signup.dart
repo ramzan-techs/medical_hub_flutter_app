@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+
 import 'package:medical_hub/api/apis.dart';
 import 'package:medical_hub/constants.dart';
 import 'package:medical_hub/main.dart';
@@ -8,8 +9,10 @@ import 'package:medical_hub/screens/auth/login/login_screen.dart';
 
 import 'package:medical_hub/screens/auth/login/validation_hub.dart';
 import 'package:medical_hub/screens/auth/login/widgets.dart';
-import 'package:medical_hub/screens/auth/signup/email_otp_verification.dart';
+
 import 'package:medical_hub/screens/custom_widgets.dart';
+
+import 'email_verification_screen.dart';
 
 class UserSignUp extends StatefulWidget {
   const UserSignUp({super.key});
@@ -55,35 +58,60 @@ class _UserSignUpState extends State<UserSignUp> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: TopDecoration(
-                height: mq.height * 0.20,
-                text: 'Sign Up',
-                fontSize: 32,
-              ),
-            ),
-            SizedBox(
-              height: mq.height * 0.055,
-            ),
-            const WelcomeTextWidget(
-              text: 'create account!',
-              textSize: 26,
-            ),
-            SizedBox(
-              height: mq.height * 0.03,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: mq.width * 0.1),
-              child: Form(
-                key: _formState,
-                child: Expanded(
-                  child: ListView(
-                    children: [
-                      Column(
+            Expanded(
+              child: ListView(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: TopDecoration(
+                      height: mq.height * 0.20,
+                      text: 'Sign Up',
+                      fontSize: 32,
+                    ),
+                  ),
+                  SizedBox(
+                    height: mq.height * 0.055,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * .1),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Text(
+                          "Create Account".toUpperCase(),
+                          style: const TextStyle(
+                              color: Colors.green,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        Positioned(
+                          bottom: -40,
+                          right: MediaQuery.of(context).size.width * .08,
+                          child: Container(
+                            height: 120,
+                            width: 100,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('assets/images/man.png'),
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: mq.height * 0.03,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: mq.width * 0.1),
+                    child: Form(
+                      key: _formState,
+                      child: Column(
                         children: [
                           //full name field
 
@@ -239,17 +267,17 @@ class _UserSignUpState extends State<UserSignUp> {
                                     String result = await _handleSignUpBtn(
                                         _email, _password);
                                     if (result.toString() == 'Created') {
-                                      CustomWidget.showSnackBar(
-                                          context, 'Created Successfully!');
+                                      CustomWidget.showSnackBar(context,
+                                          'Account Created Successfully!');
                                       setState(() {
                                         _isSignUpBtnClicked = false;
                                       });
-                                      APIs.sendVerificationEmail();
+
                                       Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                               builder: (_) =>
-                                                  const EmailOTPVerificationScreen()));
+                                                  const EmailVerificationScreen()));
                                     } else {
                                       CustomWidget.showSnackBar(
                                           context, result.toString());
@@ -287,49 +315,55 @@ class _UserSignUpState extends State<UserSignUp> {
                                     )),
                         ],
                       ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'Already have a account?',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+
+                      //sign in buttton
+
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const LoginScreen()));
+                        },
+                        child: const Text(
+                          'Sign In',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 72, 37, 199),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              decorationColor:
+                                  Color.fromARGB(255, 17, 79, 130)),
+                        ),
+                      ),
                     ],
                   ),
-                ),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Already have a account?',
-                  style: TextStyle(fontSize: 17),
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-
-                //sign in buttton
-
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (_) => const LoginScreen()));
-                  },
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 72, 37, 199),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        decorationColor: Color.fromARGB(255, 17, 79, 130)),
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-                child: BottomDecoration(
-              height: mq.height * 0.17,
-            )),
           ],
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.white,
+          height: mq.height * 0.15,
+          child: BottomDecoration(
+            height: mq.height * 0.17,
+          ),
         ),
       ),
     );

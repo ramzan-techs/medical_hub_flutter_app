@@ -1,157 +1,110 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/material.dart';
-import 'package:medical_hub/main.dart';
-import 'package:medical_hub/screens/auth/login/login_screen.dart';
+// ignore_for_file: use_build_context_synchronously
 
-class SplashScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lottie/lottie.dart';
+import 'package:medical_hub/api/apis.dart';
+import 'package:medical_hub/constants.dart';
+import 'package:medical_hub/main.dart';
+
+import 'package:medical_hub/screens/home_screen.dart';
+import 'package:medical_hub/screens/welcome_screen.dart';
+
+import 'auth/signup/email_verification_screen.dart';
+
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    Future.delayed(const Duration(milliseconds: 1500)).then((value) {
+      APIs.auth.authStateChanges().listen((user) {
+        if (user != null) {
+          // If user is signed in
+          if (user.emailVerified) {
+            // If user's email is verified, navigate to home screen
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          } else {
+            // If user's email is not verified, navigate to email verification screen
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => const EmailVerificationScreen()),
+            );
+          }
+        } else {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => const WelcomeScreen()));
+        }
+      });
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color.fromARGB(255, 68, 192, 90),
-              Color.fromARGB(255, 3, 100, 21)
-            ],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(
+            width: double.infinity,
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: mq.height * 0.14,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //app logo displayed in circle
-                      Container(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromARGB(255, 123, 186, 21),
-                        ),
-                        height: 60,
-                        width: 60,
-                        child: Center(
-                          child: Container(
-                            height: 44,
-                            width: 44,
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/doctor.png'),
-                                    fit: BoxFit.scaleDown)),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      //App Name
-                      const Text(
-                        'MEDICAL HUB',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 240, 241, 244)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  //text displayed under logo and name
-                  DefaultTextStyle(
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17),
-                    child: AnimatedTextKit(
-                        isRepeatingAnimation: true,
-                        repeatForever: true,
-                        animatedTexts: [
-                          TyperAnimatedText('FIND DOCTORS NEARBY AND CONSULTS!',
-                              speed: const Duration(milliseconds: 150)),
-                          TyperAnimatedText('BOOK APPOINTMENTS QUICKLY!',
-                              speed: const Duration(milliseconds: 150)),
-                          TyperAnimatedText('REAL TIME CHAT WITH DOCTOR!',
-                              speed: const Duration(milliseconds: 150)),
-                        ]),
-                  )
-                ],
-              ),
-            ),
-            Column(
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.diversity_3_sharp,
-                  color: Colors.white,
+                Lottie.asset('assets/lottie/splash1.json'),
+                Text(
+                  "Medical Hub",
+                  style: TextStyle(
+                      color: Constants().primaryColor,
+                      fontSize: 38,
+                      fontWeight: FontWeight.bold),
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                  child: RichText(
-                    text: const TextSpan(
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 248, 242, 242),
-                            fontSize: 15),
-                        children: [
-                          TextSpan(
-                              text: 'Medical Hub',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          TextSpan(
-                              text:
-                                  ' is your comprehensive healthcare companion,'
-                                  ' designed to make healthcare services more accessible and'
-                                  ' convenient for everyone. Whether you\'re looking for a trusted'
-                                  ' doctor, scheduling appointments, or managing your medical'
-                                  ' records, Medical Hub has you covered.')
-                        ]),
-                    textAlign: TextAlign.justify,
-                  ),
+                const SizedBox(
+                  height: 50,
                 ),
-
-                //button to move ahead
-                Container(
-                  padding: EdgeInsets.only(top: 12, bottom: mq.height * 0.05),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const LoginScreen()));
+                Center(
+                  child: SpinKitFadingCircle(
+                    itemBuilder: (BuildContext context, int index) {
+                      return DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: index.isEven
+                              ? const Color.fromARGB(255, 12, 109, 26)
+                              : Colors.green,
+                        ),
+                      );
                     },
-                    style: TextButton.styleFrom(
-                        shape: const StadiumBorder(),
-                        backgroundColor: Colors.white,
-                        fixedSize: Size.fromWidth(mq.width * 0.7)),
-                    child: const Text(
-                      'CONTINUE',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 39, 95, 41),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
                   ),
-                ),
+                )
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 20),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+                color: Constants().primaryColor.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(30)),
+            child: const Text(
+              "Powered By RamzanTechs",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
       ),
     );
   }
