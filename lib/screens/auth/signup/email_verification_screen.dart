@@ -29,6 +29,17 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     await APIs.sendVerificationEmail();
   }
 
+  Future<void> _deleteUser(String email) async {
+    try {
+      if (APIs.auth.currentUser != null) {
+        await APIs.auth.currentUser!.delete();
+      }
+    } catch (e) {
+      CustomWidget.showSnackBar(context, e.toString().substring(0, 30));
+      APIs.auth.signOut();
+    }
+  }
+
   @override
   void initState() {
     try {
@@ -85,7 +96,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                     text: TextSpan(
                       children: [
                         const TextSpan(
-                            text: 'Verification Email ',
+                            text: 'Verification Email',
                             style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 decorationThickness: 2,
@@ -93,7 +104,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                 fontSize: 22,
                                 color: Color.fromARGB(255, 35, 97, 37))),
                         const TextSpan(
-                            text: 'has been sent to ',
+                            text: ' has been sent to ',
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Color.fromARGB(255, 14, 173, 46),
@@ -167,6 +178,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
                       GestureDetector(
                         onTap: () {
+                          _deleteUser(APIs.user.email!);
+
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

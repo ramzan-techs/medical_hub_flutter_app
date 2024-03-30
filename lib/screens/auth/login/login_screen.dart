@@ -117,10 +117,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                     validator: (value) {
-                      log(_email);
-                      if (value!.isEmpty) {
+                      if (value == null || value.trim().isEmpty) {
                         return 'Email Required';
-                      } else if (ValidationHub().isValidEmailFormat(_email)) {
+                      } else if (ValidationHub()
+                          .isValidEmailFormat(value.trim())) {
                         return null;
                       } else {
                         return 'Invalid Email';

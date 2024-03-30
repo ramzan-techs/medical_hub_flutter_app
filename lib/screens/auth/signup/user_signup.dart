@@ -59,304 +59,269 @@ class _UserSignUpState extends State<UserSignUp> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         // resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: TopDecoration(
-                      height: mq.height * 0.20,
-                      text: 'Sign Up',
-                      fontSize: 32,
-                    ),
-                  ),
-                  SizedBox(
-                    height: mq.height * 0.055,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * .1),
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Text(
-                          "Create Account".toUpperCase(),
-                          style: const TextStyle(
-                              color: Colors.green,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        Positioned(
-                          bottom: -40,
-                          right: MediaQuery.of(context).size.width * .08,
-                          child: Container(
-                            height: 120,
-                            width: 100,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('assets/images/man.png'),
-                                  fit: BoxFit.cover),
-                            ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: TopDecoration(
+                    text: "Sign Up", fontSize: 30, height: mq.height * 0.25),
+              ),
+              SizedBox(
+                height: mq.height * 0.055,
+              ),
+              const WelcomeTextWidget(text: "Create account!", textSize: 30),
+              SizedBox(
+                height: mq.height * 0.03,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: mq.width * 0.1),
+                child: Form(
+                  key: _formState,
+                  child: Column(
+                    children: [
+                      //full name field
+
+                      TextFormField(
+                        keyboardType: TextInputType.name,
+                        decoration: const InputDecoration(
+                          hintText: 'Full Name',
+                          suffixIcon: Icon(
+                            Icons.person,
+                            color: Colors.green,
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: mq.height * 0.03,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: mq.width * 0.1),
-                    child: Form(
-                      key: _formState,
-                      child: Column(
-                        children: [
-                          //full name field
-
-                          TextFormField(
-                            keyboardType: TextInputType.name,
-                            decoration: const InputDecoration(
-                              hintText: 'Full Name',
-                              suffixIcon: Icon(
-                                Icons.person,
-                                color: Colors.green,
-                              ),
-                            ),
-                            onSaved: (value) {
-                              _name = value!;
-                            },
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Required';
-                              } else if (validationHub.isValidFullName(value)) {
-                                return null;
-                              } else {
-                                return 'Only alphabets allow!';
-                              }
-                            },
-                          ),
-                          SizedBox(
-                            height: mq.height * 0.017,
-                          ),
-
-                          //email field
-
-                          TextFormField(
-                            controller: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              hintText: 'Email',
-                              suffixIcon: Icon(
-                                Icons.email,
-                                color: Colors.green,
-                              ),
-                            ),
-                            onSaved: (newValue) {
-                              _email = newValue!;
-                            },
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Required';
-                              } else if (validationHub
-                                  .isValidEmailFormat(value)) {
-                                return null;
-                              } else {
-                                return 'Invalid Format!';
-                              }
-                            },
-                          ),
-                          SizedBox(
-                            height: mq.height * 0.017,
-                          ),
-
-                          //password field
-
-                          TextFormField(
-                            controller: _passwordController,
-                            obscureText: !_showPassword,
-                            decoration: InputDecoration(
-                                hintText: 'Password',
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _showPassword = !_showPassword;
-                                      });
-                                    },
-                                    icon: _showPassword
-                                        ? const Icon(Icons.visibility_off,
-                                            color: Colors.green)
-                                        : const Icon(
-                                            Icons.visibility,
-                                            color: Colors.green,
-                                          ))),
-                            onChanged: (value) {
-                              setState(() {
-                                _password = value;
-                              });
-                            },
-                            onSaved: (newValue) {
-                              _password = newValue!;
-                            },
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Required';
-                              } else if (validationHub.isPasswordValid(value)) {
-                                return null;
-                              } else {
-                                return 'Must contain minimum 8 characters!';
-                              }
-                            },
-                          ),
-                          SizedBox(
-                            height: mq.height * 0.017,
-                          ),
-
-                          // confirmation password field
-
-                          TextFormField(
-                            controller: _confirmPasswordController,
-                            obscureText: !_showConfirmPassword,
-                            decoration: InputDecoration(
-                                hintText: 'Confirm Password',
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _showConfirmPassword =
-                                            !_showConfirmPassword;
-                                      });
-                                    },
-                                    icon: _showConfirmPassword
-                                        ? const Icon(Icons.visibility_off,
-                                            color: Colors.green)
-                                        : const Icon(
-                                            Icons.visibility,
-                                            color: Colors.green,
-                                          ))),
-                            onSaved: (newValue) {
-                              _password = newValue!;
-                            },
-                            validator: (value) {
-                              if (value == "") {
-                                return 'Required!';
-                              } else if (_password == value) {
-                                return null;
-                              } else {
-                                return 'Not Matched!';
-                              }
-                            },
-                          ),
-
-                          SizedBox(
-                            height: mq.height * 0.02,
-                          ),
-
-                          //sign up button
-
-                          ElevatedButton(
-                              onPressed: () async {
-                                FocusScope.of(context).unfocus();
-                                if (_formState.currentState != null &&
-                                    _formState.currentState!.validate()) {
-                                  _formState.currentState!.save();
-                                  setState(() {
-                                    _isSignUpBtnClicked = true;
-                                  });
-                                  try {
-                                    String result = await _handleSignUpBtn(
-                                        _email, _password);
-                                    if (result.toString() == 'Created') {
-                                      CustomWidget.showSnackBar(context,
-                                          'Account Created Successfully!');
-                                      setState(() {
-                                        _isSignUpBtnClicked = false;
-                                      });
-
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  const EmailVerificationScreen()));
-                                    } else {
-                                      CustomWidget.showSnackBar(
-                                          context, result.toString());
-                                      setState(() {
-                                        _isSignUpBtnClicked = false;
-                                      });
-                                    }
-                                  } catch (e) {
-                                    CustomWidget.showSnackBar(
-                                        context, e.toString());
-
-                                    setState(() {
-                                      _isSignUpBtnClicked = false;
-                                    });
-                                  }
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  foregroundColor: Colors.white,
-                                  fixedSize:
-                                      Size(mq.width * 0.6, mq.height * 0.06)),
-                              child: _isSignUpBtnClicked
-                                  ? Center(
-                                      child: CircularProgressIndicator(
-                                        color: Constants().loaderColor,
-                                      ),
-                                    )
-                                  : const Text(
-                                      'Sign Up',
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 2),
-                                    )),
-                        ],
+                        onSaved: (value) {
+                          _name = value!.trim();
+                        },
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Required';
+                          } else if (validationHub
+                              .isValidFullName(value.trim())) {
+                            return null;
+                          } else {
+                            return 'Only alphabets allow!';
+                          }
+                        },
                       ),
-                    ),
+                      SizedBox(
+                        height: mq.height * 0.017,
+                      ),
+
+                      //email field
+
+                      TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          hintText: 'Email',
+                          suffixIcon: Icon(
+                            Icons.email,
+                            color: Colors.green,
+                          ),
+                        ),
+                        onSaved: (newValue) {
+                          _email = newValue!.trim();
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Required';
+                          } else if (validationHub
+                              .isValidEmailFormat(value.trim())) {
+                            return null;
+                          } else {
+                            return 'Invalid Format!';
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: mq.height * 0.017,
+                      ),
+
+                      //password field
+
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: !_showPassword,
+                        decoration: InputDecoration(
+                            hintText: 'Password',
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _showPassword = !_showPassword;
+                                  });
+                                },
+                                icon: _showPassword
+                                    ? const Icon(Icons.visibility_off,
+                                        color: Colors.green)
+                                    : const Icon(
+                                        Icons.visibility,
+                                        color: Colors.green,
+                                      ))),
+                        onChanged: (value) {
+                          setState(() {
+                            _password = value;
+                          });
+                        },
+                        onSaved: (newValue) {
+                          _password = newValue!;
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Required';
+                          } else if (validationHub.isPasswordValid(value)) {
+                            return null;
+                          } else {
+                            return 'Must contain minimum 8 characters!';
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: mq.height * 0.017,
+                      ),
+
+                      // confirmation password field
+
+                      TextFormField(
+                        controller: _confirmPasswordController,
+                        obscureText: !_showConfirmPassword,
+                        decoration: InputDecoration(
+                            hintText: 'Confirm Password',
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _showConfirmPassword =
+                                        !_showConfirmPassword;
+                                  });
+                                },
+                                icon: _showConfirmPassword
+                                    ? const Icon(Icons.visibility_off,
+                                        color: Colors.green)
+                                    : const Icon(
+                                        Icons.visibility,
+                                        color: Colors.green,
+                                      ))),
+                        onSaved: (newValue) {
+                          _password = newValue!;
+                        },
+                        validator: (value) {
+                          if (value == "") {
+                            return 'Required!';
+                          } else if (_password == value) {
+                            return null;
+                          } else {
+                            return 'Not Matched!';
+                          }
+                        },
+                      ),
+
+                      SizedBox(
+                        height: mq.height * 0.02,
+                      ),
+
+                      //sign up button
+
+                      ElevatedButton(
+                          onPressed: () async {
+                            FocusScope.of(context).unfocus();
+                            if (_formState.currentState != null &&
+                                _formState.currentState!.validate()) {
+                              _formState.currentState!.save();
+                              setState(() {
+                                _isSignUpBtnClicked = true;
+                              });
+                              try {
+                                String result =
+                                    await _handleSignUpBtn(_email, _password);
+                                if (result.toString() == 'Created') {
+                                  CustomWidget.showSnackBar(
+                                      context, 'Account Created Successfully!');
+                                  setState(() {
+                                    _isSignUpBtnClicked = false;
+                                  });
+
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              const EmailVerificationScreen()));
+                                } else {
+                                  CustomWidget.showSnackBar(
+                                      context, result.toString());
+                                  setState(() {
+                                    _isSignUpBtnClicked = false;
+                                  });
+                                }
+                              } catch (e) {
+                                CustomWidget.showSnackBar(
+                                    context, e.toString());
+
+                                setState(() {
+                                  _isSignUpBtnClicked = false;
+                                });
+                              }
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                              fixedSize:
+                                  Size(mq.width * 0.6, mq.height * 0.06)),
+                          child: _isSignUpBtnClicked
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                    color: Constants().loaderColor,
+                                  ),
+                                )
+                              : const Text(
+                                  'Sign Up',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 2),
+                                )),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Already have a account?',
+                    style: TextStyle(fontSize: 17),
                   ),
                   const SizedBox(
-                    height: 8,
+                    width: 4,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'Already have a account?',
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
 
-                      //sign in buttton
+                  //sign in buttton
 
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const LoginScreen()));
-                        },
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 72, 37, 199),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              decorationColor:
-                                  Color.fromARGB(255, 17, 79, 130)),
-                        ),
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const LoginScreen()));
+                    },
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 72, 37, 199),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          decorationColor: Color.fromARGB(255, 17, 79, 130)),
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           color: Colors.white,

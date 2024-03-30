@@ -18,23 +18,21 @@ class TopDecoration extends StatelessWidget {
     return Stack(
       children: [
         Positioned(
-            child: Material(
-          child: Container(
-            height: height,
-            width: mq.width * 0.9,
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5), // Shadow color
-                    spreadRadius: 5, // Spread radius
-                    blurRadius: 7, // Blur radius
-                    offset: const Offset(0, 3), // Offset
-                  ),
-                ],
-                color: const Color.fromARGB(255, 112, 212, 115),
-                borderRadius:
-                    const BorderRadius.only(bottomRight: Radius.circular(30))),
-          ),
+            child: Container(
+          height: height,
+          width: mq.width * 0.9,
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5), // Shadow color
+                  spreadRadius: 5, // Spread radius
+                  blurRadius: 7, // Blur radius
+                  offset: const Offset(0, 3), // Offset
+                ),
+              ],
+              color: const Color.fromARGB(255, 112, 212, 115),
+              borderRadius:
+                  const BorderRadius.only(bottomRight: Radius.circular(30))),
         )),
         Stack(
           children: [
