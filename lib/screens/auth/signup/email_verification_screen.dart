@@ -5,10 +5,8 @@ import 'package:medical_hub/api/apis.dart';
 
 import 'package:medical_hub/main.dart';
 import 'package:medical_hub/screens/auth/login/widgets.dart';
-import 'package:medical_hub/screens/auth/signup/user_signup.dart';
-import 'package:medical_hub/screens/custom_widgets.dart';
 
-import 'package:medical_hub/screens/home_screen.dart';
+import 'package:medical_hub/screens/custom_widgets.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({
@@ -52,6 +50,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    mq = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
         children: [
@@ -132,10 +131,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                     onPressed: () async {
                       await _reloadUserInfo();
                       if (APIs.user.emailVerified) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const HomeScreen()));
+                        Navigator.pushReplacementNamed(context, '/home');
                       } else {
                         CustomWidget.showSnackBar(
                             context, 'Verify Email First!');
@@ -159,44 +155,68 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Center(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'Wrong Email?',
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
+                      Expanded(
+                          child: Row(
+                        children: [
+                          const Text(
+                            'Wrong Email?',
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
 
-                      //sign Up in buttton
+                          //sign Up in buttton
 
-                      GestureDetector(
-                        onTap: () {
-                          _deleteUser(APIs.user.email!);
+                          GestureDetector(
+                            onTap: () {
+                              _deleteUser(APIs.user.email!);
 
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const UserSignUp()));
+                              Navigator.pushReplacementNamed(
+                                  context, '/userSignUp');
+                            },
+                            child: const Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 72, 37, 199),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  decorationColor:
+                                      Color.fromARGB(255, 17, 79, 130)),
+                            ),
+                          ),
+                        ],
+                      )),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, '/login');
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 190, 226, 192),
+                          foregroundColor:
+                              const Color.fromARGB(255, 50, 142, 56),
+                        ),
                         child: const Text(
-                          'Sign Up',
+                          'Back To Login',
                           style: TextStyle(
-                              color: Color.fromARGB(255, 72, 37, 199),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              decorationColor:
-                                  Color.fromARGB(255, 17, 79, 130)),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
               ],
             ),

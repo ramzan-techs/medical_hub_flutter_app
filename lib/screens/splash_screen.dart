@@ -7,11 +7,6 @@ import 'package:medical_hub/api/apis.dart';
 import 'package:medical_hub/constants.dart';
 import 'package:medical_hub/main.dart';
 
-import 'package:medical_hub/screens/home_screen.dart';
-import 'package:medical_hub/screens/welcome_screen.dart';
-
-import 'auth/signup/email_verification_screen.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -28,19 +23,13 @@ class _SplashScreenState extends State<SplashScreen> {
           // If user is signed in
           if (user.emailVerified) {
             // If user's email is verified, navigate to home screen
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
-            );
+            Navigator.pushReplacementNamed(context, '/home');
           } else {
             // If user's email is not verified, navigate to email verification screen
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                  builder: (context) => const EmailVerificationScreen()),
-            );
+            Navigator.pushReplacementNamed(context, '/emailVerification');
           }
         } else {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (_) => const WelcomeScreen()));
+          Navigator.pushReplacementNamed(context, '/welcome');
         }
       });
     });
@@ -92,15 +81,15 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Container(
             margin: const EdgeInsets.only(bottom: 20),
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-                color: Constants().primaryColor.withOpacity(0.8),
+                color: Constants().primaryColor.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(30)),
-            child: const Text(
+            child: Text(
               "Powered By RamzanTechs",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
+                  color: Constants().primaryColor,
+                  fontSize: 17,
                   fontWeight: FontWeight.bold),
             ),
           )

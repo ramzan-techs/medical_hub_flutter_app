@@ -22,6 +22,8 @@ class APIs {
         throw ('The email address is already in use.');
       } else if (e.code == 'weak-password') {
         throw ('The password provided is too weak.');
+      } else if (e.code == 'network-request-failed') {
+        throw ('Check Internet Connection!');
       } else {
         throw ('FirebaseAuthException: ${e.code}');
       }

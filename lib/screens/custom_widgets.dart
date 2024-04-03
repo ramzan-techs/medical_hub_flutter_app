@@ -15,7 +15,7 @@ class CustomWidget {
       duration: const Duration(seconds: 5),
       backgroundColor: Constants().primaryColor,
       behavior: SnackBarBehavior.floating,
-      shape: const StadiumBorder(),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ));
   }
 }

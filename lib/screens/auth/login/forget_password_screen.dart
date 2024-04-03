@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_hub/api/apis.dart';
 import 'package:medical_hub/main.dart';
-import 'package:medical_hub/screens/auth/login/login_screen.dart';
+
 import 'package:medical_hub/screens/auth/login/validation_hub.dart';
 import 'package:medical_hub/screens/auth/login/widgets.dart';
 import 'package:medical_hub/screens/custom_widgets.dart';
@@ -43,7 +43,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       setState(() {
         _isSending = false;
       });
-      CustomWidget.showSnackBar(context, e.toString());
+      if (e.code == 'network-request-failed') {
+        CustomWidget.showSnackBar(context, 'Check Internet Connection!');
+      } else {
+        CustomWidget.showSnackBar(context, e.toString());
+      }
     } catch (e) {
       // Show error message to the user
       CustomWidget.showSnackBar(
@@ -146,7 +150,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           foregroundColor: Colors.white,
                           fixedSize: Size(mq.width * 0.6, mq.height * 0.06)),
                       child: _isSending
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
                           : const Text(
                               'Send',
                               style: TextStyle(
@@ -175,10 +181,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const LoginScreen()));
+                          Navigator.pushReplacementNamed(context, '/login');
                         },
                         child: const Text(
                           'Sign In',

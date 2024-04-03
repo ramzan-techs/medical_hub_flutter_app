@@ -2,17 +2,15 @@
 
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_hub/api/apis.dart';
 import 'package:medical_hub/main.dart';
-import 'package:medical_hub/screens/auth/login/forget_password_screen.dart';
+
 import 'package:medical_hub/screens/auth/login/validation_hub.dart';
 
-import 'package:medical_hub/screens/auth/signup/user_signup.dart';
 import 'package:medical_hub/screens/custom_widgets.dart';
-import 'package:medical_hub/screens/home_screen.dart';
 
-import '../signup/email_verification_screen.dart';
 import 'widgets.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -53,13 +51,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (result['userCredential'] != null) {
       // Successfully signed in, handle navigation or other actions
-      if (APIs.user.emailVerified) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+      final userCredential =
+          result['userCredential'] as UserCredential; // Cast to UserCredential
+      if (userCredential.user!.emailVerified) {
+        Navigator.pushReplacementNamed(context, '/home');
       } else {
-        await APIs.sendVerificationEmail();
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => const EmailVerificationScreen()));
+        Navigator.pushReplacementNamed(context, '/emailVerification');
       }
     } else {
       // Handle sign in errors
@@ -173,11 +170,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) =>
-                                      const ForgetPasswordScreen()));
+                          Navigator.pushReplacementNamed(
+                              context, '/forgetPassword');
                         },
                         child: const Text(
                           'Forget Password?',
@@ -207,7 +201,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           foregroundColor: Colors.white,
                           fixedSize: Size(mq.width * 0.6, mq.height * 0.06)),
                       child: _isLogin
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
                           : const Text(
                               'Login',
                               style: TextStyle(
@@ -238,8 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => const UserSignUp()));
+                  Navigator.pushReplacementNamed(context, '/userSignUp');
                 },
                 child: const Text(
                   'Sign Up',

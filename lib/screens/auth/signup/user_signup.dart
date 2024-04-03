@@ -5,14 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:medical_hub/api/apis.dart';
 import 'package:medical_hub/constants.dart';
 import 'package:medical_hub/main.dart';
-import 'package:medical_hub/screens/auth/login/login_screen.dart';
 
 import 'package:medical_hub/screens/auth/login/validation_hub.dart';
 import 'package:medical_hub/screens/auth/login/widgets.dart';
 
 import 'package:medical_hub/screens/custom_widgets.dart';
-
-import 'email_verification_screen.dart';
 
 class UserSignUp extends StatefulWidget {
   const UserSignUp({super.key});
@@ -241,11 +238,8 @@ class _UserSignUpState extends State<UserSignUp> {
                                     _isSignUpBtnClicked = false;
                                   });
 
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const EmailVerificationScreen()));
+                                  Navigator.pushReplacementNamed(
+                                      context, '/emailVerification');
                                 } else {
                                   CustomWidget.showSnackBar(
                                       context, result.toString());
@@ -304,10 +298,7 @@ class _UserSignUpState extends State<UserSignUp> {
 
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const LoginScreen()));
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
                     child: const Text(
                       'Sign In',

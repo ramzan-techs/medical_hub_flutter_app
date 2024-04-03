@@ -1,7 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_hub/main.dart';
-import 'package:medical_hub/screens/auth/login/login_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -133,14 +134,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 Container(
                   padding: EdgeInsets.only(top: 12, bottom: mq.height * 0.05),
                   child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       setState(() {
                         _isBtnClicked = true;
                       });
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const LoginScreen()));
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
                     style: TextButton.styleFrom(
                         shape: const StadiumBorder(),
