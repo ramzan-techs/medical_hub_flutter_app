@@ -1,10 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:medical_hub/models/base_user.dart';
 
 class APIs {
   static FirebaseAuth auth = FirebaseAuth.instance;
 
   //for accessing current user
   static User get user => auth.currentUser!;
+
+  // for accessing databse
+  static FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // ************* Authentication APIs *************** //
 
   //creating new user with email and password
   static Future<UserCredential> createUser(
@@ -53,18 +60,24 @@ class APIs {
     }
   }
 
-  //handle error
-  // static String _handleError(dynamic e) {
-  //   // You can handle different types of errors here and return appropriate error messages
-  //   String errorMessage = "";
-  //   // Example:
-  //   if (e.code == 'user-not-found') {
-  //     print('in no user found');
-  //     errorMessage = 'No user found for that email.';
-  //   } else if (e.code == 'wrong-password') {
-  //     print('in wrong password');
-  //     errorMessage = 'Wrong password provided for that user.';
-  //   }
-  //   return errorMessage;
-  // }
+// ************** Base User APIs ************** //
+
+  static Future<void> createBaseUser(
+    String name,
+    UserType type,
+  ) async {
+    final currentTime = DateTime.now().millisecondsSinceEpoch.toString();
+
+    final baseUser = BaseUser(
+        id: user.uid,
+        name: name,
+        userType: type,
+        createdAt: currentTime,
+        email: user.email!);
+
+    await firestore
+        .collection("base_users")
+        .doc(user.uid)
+        .set(baseUser.toJson());
+  }
 }

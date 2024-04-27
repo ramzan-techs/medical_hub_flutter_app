@@ -1,15 +1,20 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:medical_hub/api/apis.dart';
 import 'package:medical_hub/constants.dart';
 import 'package:medical_hub/main.dart';
+import 'package:medical_hub/models/base_user.dart';
 
 import 'package:medical_hub/screens/auth/login/validation_hub.dart';
 import 'package:medical_hub/screens/auth/login/widgets.dart';
 
 import 'package:medical_hub/screens/custom_widgets.dart';
+
+import 'user_type_segment.dart';
 
 class UserSignUp extends StatefulWidget {
   const UserSignUp({super.key});
@@ -27,6 +32,9 @@ class _UserSignUpState extends State<UserSignUp> {
   late String _name;
   late String _email;
   late String _password;
+
+  // for selecting type of user
+  UserType userType = UserType.user;
 
   bool _showPassword = false;
   bool _showConfirmPassword = false;
@@ -68,15 +76,22 @@ class _UserSignUpState extends State<UserSignUp> {
                 height: mq.height * 0.055,
               ),
               const WelcomeTextWidget(text: "Create account!", textSize: 30),
-              SizedBox(
-                height: mq.height * 0.03,
-              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: mq.width * 0.1),
                 child: Form(
                   key: _formState,
                   child: Column(
                     children: [
+                      // type selector
+                      UserTypeSegment(
+                        selectedValue: userType,
+                        onSelectionChanged: (newSelection) {
+                          setState(() {
+                            userType = newSelection.first;
+                          });
+                          log(newSelection.first.toString());
+                        },
+                      ),
                       //full name field
 
                       TextFormField(
@@ -232,6 +247,7 @@ class _UserSignUpState extends State<UserSignUp> {
                                 String result =
                                     await _handleSignUpBtn(_email, _password);
                                 if (result.toString() == 'Created') {
+                                  await APIs.createBaseUser(_name, userType);
                                   CustomWidget.showSnackBar(
                                       context, 'Account Created Successfully!');
                                   setState(() {

@@ -4,13 +4,15 @@ import 'package:medical_hub/screens/auth/login/forget_password_screen.dart';
 import 'package:medical_hub/screens/auth/login/login_screen.dart';
 import 'package:medical_hub/screens/auth/signup/email_verification_screen.dart';
 import 'package:medical_hub/screens/auth/signup/user_signup.dart';
-import 'package:medical_hub/screens/home_screen.dart';
+
 import 'package:medical_hub/screens/splash_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:medical_hub/screens/welcome_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'firebase_options.dart';
+import 'screens/user/user_home_nav.dart';
 
 late Size mq;
 
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
         switch (settings.name) {
           case '/home':
             return PageTransition(
-                child: const HomeScreen(),
+                child: const UserHomeNav(),
                 type: PageTransitionType.scale,
                 alignment: Alignment.bottomCenter,
                 duration: const Duration(milliseconds: 1200));

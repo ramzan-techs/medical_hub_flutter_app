@@ -167,10 +167,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                         children: [
                           const Text(
                             'Wrong Email?',
-                            style: TextStyle(fontSize: 17),
+                            style: TextStyle(fontSize: 14),
                           ),
                           const SizedBox(
-                            width: 4,
+                            width: 2,
                           ),
 
                           //sign Up in buttton
@@ -187,7 +187,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                               style: TextStyle(
                                   color: Color.fromARGB(255, 72, 37, 199),
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                                  fontSize: 17,
                                   decorationColor:
                                       Color.fromARGB(255, 17, 79, 130)),
                             ),
@@ -207,7 +207,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                         child: const Text(
                           'Back To Login',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 17,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
