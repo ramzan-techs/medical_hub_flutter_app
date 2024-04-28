@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:medical_hub/constants.dart';
+import 'package:medical_hub/data/category_image_paths.dart';
+import 'package:medical_hub/data/doctor_types.dart';
 import 'package:medical_hub/main.dart';
 import 'package:medical_hub/screens/user/home/widgets/category_card.dart';
 
@@ -64,44 +67,71 @@ class UserHome extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(10),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: mq.width,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Browse by Category",
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 22, 110, 25)),
-                    ),
-                    Text(
-                      "See all",
-                      style: TextStyle(color: Colors.green, fontSize: 18),
-                    )
-                  ],
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 10),
-                  height: mq.width * 0.36,
-                  // Constrain the height of the ListView
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      // Build your list item here
-                      return CategoryCard();
-                    },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: mq.width,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Browse by Category",
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 22, 110, 25)),
                   ),
+                  Text(
+                    "See all",
+                    style: TextStyle(
+                        color: Constants().secondaryTextColor,
+                        fontSize: 17,
+                        decoration: TextDecoration.underline),
+                  )
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 10),
+                height: mq.width * 0.6,
+
+                // Constrain the height of the ListView
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: doctorTypes.keys.toList().length,
+                  itemBuilder: (context, index) {
+                    // Build your list item here
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CategoryCard(
+                          imagePath: categoryImagePaths[doctorTypes.keys
+                                  .toList()[index]
+                                  .toString()] ??
+                              "",
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        SizedBox(
+                          width: mq.width * 0.3,
+                          child: Text(
+                            doctorTypes.keys.toList()[index].toString(),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Constants().secondaryTextColor),
+                          ),
+                        )
+                      ],
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         )
       ],

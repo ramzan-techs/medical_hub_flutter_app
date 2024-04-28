@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:medical_hub/constants.dart';
+
 import 'package:medical_hub/screens/user/home/user_home.dart';
 import 'package:medical_hub/screens/user/user_profile.dart';
 

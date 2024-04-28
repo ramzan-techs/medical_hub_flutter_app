@@ -15,7 +15,7 @@ class UserChats extends StatelessWidget {
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15)),
             ),
-            child: Row(
+            child: const Row(
               children: [Text("Hello Ramzan")],
             ),
           ),
