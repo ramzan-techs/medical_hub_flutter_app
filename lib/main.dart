@@ -8,6 +8,7 @@ import 'package:medical_hub/screens/auth/signup/user_signup.dart';
 import 'package:medical_hub/screens/splash_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:medical_hub/screens/user/category/category_screen.dart';
 
 import 'package:medical_hub/screens/welcome_screen.dart';
 import 'package:page_transition/page_transition.dart';
@@ -49,13 +50,13 @@ class MyApp extends StatelessWidget {
             return PageTransition(
                 child: const UserHomeNav(),
                 type: PageTransitionType.scale,
-                alignment: Alignment.bottomCenter,
+                alignment: Alignment.centerRight,
                 duration: const Duration(milliseconds: 1200));
           case '/welcome':
             return PageTransition(
                 child: const WelcomeScreen(),
                 type: PageTransitionType.scale,
-                alignment: Alignment.bottomCenter,
+                alignment: Alignment.centerRight,
                 duration: const Duration(milliseconds: 1200));
           case '/login':
             return PageTransition(
@@ -68,17 +69,23 @@ class MyApp extends StatelessWidget {
                 child: const UserSignUp(),
                 type: PageTransitionType.scale,
                 // childCurrent: this,
-                alignment: Alignment.topCenter,
+                alignment: Alignment.centerRight,
                 duration: const Duration(milliseconds: 1200));
           case '/forgetPassword':
             return PageTransition(
                 child: const ForgetPasswordScreen(),
                 type: PageTransitionType.scale,
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.centerRight,
                 duration: const Duration(milliseconds: 1200));
           case '/emailVerification':
             return PageTransition(
                 child: const EmailVerificationScreen(),
+                type: PageTransitionType.scale,
+                alignment: Alignment.centerRight,
+                duration: const Duration(milliseconds: 1200));
+          case '/categoryScreen':
+            return PageTransition(
+                child: const CategoryScreen(),
                 type: PageTransitionType.scale,
                 alignment: Alignment.centerRight,
                 duration: const Duration(milliseconds: 1200));
