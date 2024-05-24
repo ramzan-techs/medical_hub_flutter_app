@@ -31,7 +31,9 @@ class CategoryItemCard extends StatelessWidget {
             ? Navigator.push(
                 context,
                 PageTransition(
-                    child: const DoctorsScreen(),
+                    child: DoctorsScreen(
+                      categoryName: categoryName,
+                    ),
                     type: PageTransitionType.scale,
                     alignment: Alignment.centerRight,
                     duration: const Duration(milliseconds: 1200)))

@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:medical_hub/api/doctor_apis.dart';
+import 'package:medical_hub/api/user_apis.dart';
 import 'package:medical_hub/models/base_user.dart';
 
 class APIs {
@@ -10,6 +15,9 @@ class APIs {
 
   // for accessing databse
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // for accessing storage of files
+  static FirebaseStorage storage = FirebaseStorage.instance;
 
   // ************* Authentication APIs *************** //
 
@@ -79,5 +87,20 @@ class APIs {
         .collection("base_users")
         .doc(user.uid)
         .set(baseUser.toJson());
+
+    if (type == UserType.doctor) {
+      log("Doctor Profile creating");
+      await DoctorApis.createDoctor(name);
+    } else {
+      await UserApis.createUser(name);
+    }
+  }
+
+  static Future<String> getUserType() async {
+    final snapshot =
+        await firestore.collection('base_users').doc(user.uid).get();
+    final type = snapshot.data()!["user_type"];
+    // print("User type ====== $type");
+    return type.toString();
   }
 }

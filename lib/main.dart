@@ -11,7 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:medical_hub/screens/user/category/category_screen.dart';
 
 import 'package:medical_hub/screens/welcome_screen.dart';
-import 'package:page_transition/page_transition.dart';
+
 import 'firebase_options.dart';
 import 'screens/user/user_home_nav.dart';
 
@@ -47,48 +47,57 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/home':
-            return PageTransition(
-                child: const UserHomeNav(),
-                type: PageTransitionType.scale,
-                alignment: Alignment.centerRight,
-                duration: const Duration(milliseconds: 1200));
+            return MaterialPageRoute(builder: (_) => const UserHomeNav());
+          // return PageTransition(
+          //     child: const UserHomeNav(),
+          //     type: PageTransitionType.scale,
+          //     alignment: Alignment.centerRight,
+          //     duration: const Duration(milliseconds: 1200));
           case '/welcome':
-            return PageTransition(
-                child: const WelcomeScreen(),
-                type: PageTransitionType.scale,
-                alignment: Alignment.centerRight,
-                duration: const Duration(milliseconds: 1200));
+            return MaterialPageRoute(builder: (_) => const WelcomeScreen());
+          // return PageTransition(
+          //     child: const WelcomeScreen(),
+          //     type: PageTransitionType.scale,
+          //     alignment: Alignment.centerRight,
+          //     duration: const Duration(milliseconds: 1200));
           case '/login':
-            return PageTransition(
-                child: const LoginScreen(),
-                type: PageTransitionType.scale,
-                alignment: Alignment.centerRight,
-                duration: const Duration(milliseconds: 1200));
+            return MaterialPageRoute(builder: (_) => const LoginScreen());
+          // return PageTransition(
+          //     child: const LoginScreen(),
+          //     type: PageTransitionType.scale,
+          //     alignment: Alignment.centerRight,
+          //     duration: const Duration(milliseconds: ));
           case '/userSignUp':
-            return PageTransition(
-                child: const UserSignUp(),
-                type: PageTransitionType.scale,
-                // childCurrent: this,
-                alignment: Alignment.centerRight,
-                duration: const Duration(milliseconds: 1200));
+            return MaterialPageRoute(builder: (_) => const UserSignUp());
+          // return PageTransition(
+          //     child: const UserSignUp(),
+          //     type: PageTransitionType.scale,
+          //     // childCurrent: this,
+          //     alignment: Alignment.centerRight,
+          //     duration: const Duration(milliseconds: 1200));
           case '/forgetPassword':
-            return PageTransition(
-                child: const ForgetPasswordScreen(),
-                type: PageTransitionType.scale,
-                alignment: Alignment.centerRight,
-                duration: const Duration(milliseconds: 1200));
+            return MaterialPageRoute(
+                builder: (_) => const ForgetPasswordScreen());
+          // return PageTransition(
+          //     child: const ForgetPasswordScreen(),
+          //     type: PageTransitionType.scale,
+          //     alignment: Alignment.centerRight,
+          //     duration: const Duration(milliseconds: 1200));
           case '/emailVerification':
-            return PageTransition(
-                child: const EmailVerificationScreen(),
-                type: PageTransitionType.scale,
-                alignment: Alignment.centerRight,
-                duration: const Duration(milliseconds: 1200));
+            return MaterialPageRoute(
+                builder: (_) => const EmailVerificationScreen());
+          // return PageTransition(
+          //     child: const EmailVerificationScreen(),
+          //     type: PageTransitionType.scale,
+          //     alignment: Alignment.centerRight,
+          //     duration: const Duration(milliseconds: 1200));
           case '/categoryScreen':
-            return PageTransition(
-                child: const CategoryScreen(),
-                type: PageTransitionType.scale,
-                alignment: Alignment.centerRight,
-                duration: const Duration(milliseconds: 1200));
+            return MaterialPageRoute(builder: (_) => const CategoryScreen());
+          // return PageTransition(
+          //     child: const CategoryScreen(),
+          //     type: PageTransitionType.scale,
+          //     alignment: Alignment.centerRight,
+          //     duration: const Duration(milliseconds: 1200));
           default:
             return null;
         }

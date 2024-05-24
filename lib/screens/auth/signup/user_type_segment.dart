@@ -19,8 +19,8 @@ class _UserTypeSegmentState extends State<UserTypeSegment> {
   Widget build(BuildContext context) {
     return SegmentedButton(
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all(4),
-          side: MaterialStateProperty.all(
+          elevation: WidgetStateProperty.all(4),
+          side: WidgetStateProperty.all(
               const BorderSide(color: Colors.green, width: 1.5)),
         ),
         segments: const [

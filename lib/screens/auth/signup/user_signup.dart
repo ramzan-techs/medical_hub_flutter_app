@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:medical_hub/api/apis.dart';
+import 'package:medical_hub/api/doctor_apis.dart';
 import 'package:medical_hub/constants.dart';
 import 'package:medical_hub/main.dart';
 import 'package:medical_hub/models/base_user.dart';
@@ -12,7 +13,7 @@ import 'package:medical_hub/models/base_user.dart';
 import 'package:medical_hub/screens/auth/login/validation_hub.dart';
 import 'package:medical_hub/screens/auth/login/widgets.dart';
 
-import 'package:medical_hub/screens/custom_widgets.dart';
+import 'package:medical_hub/widgets/custom_widgets.dart';
 
 import 'user_type_segment.dart';
 
@@ -248,8 +249,10 @@ class _UserSignUpState extends State<UserSignUp> {
                                     await _handleSignUpBtn(_email, _password);
                                 if (result.toString() == 'Created') {
                                   await APIs.createBaseUser(_name, userType);
+
                                   CustomWidget.showSnackBar(
                                       context, 'Account Created Successfully!');
+                                  DoctorApis.getDoctorInfo();
                                   setState(() {
                                     _isSignUpBtnClicked = false;
                                   });

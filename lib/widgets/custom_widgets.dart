@@ -18,4 +18,13 @@ class CustomWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ));
   }
+
+  static void showProgressBar(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => const Center(
+                child: CircularProgressIndicator(
+              color: Colors.white,
+            )));
+  }
 }

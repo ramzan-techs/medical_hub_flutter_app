@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:medical_hub/api/apis.dart';
 import 'package:medical_hub/constants.dart';
 import 'package:medical_hub/main.dart';
+import 'package:medical_hub/screens/user/home/user_decider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,7 +24,12 @@ class _SplashScreenState extends State<SplashScreen> {
           // If user is signed in
           if (user.emailVerified) {
             // If user's email is verified, navigate to home screen
-            Navigator.pushReplacementNamed(context, '/home');
+            print("User id ==== ${user.uid}");
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserDecider(),
+                ));
           } else {
             // If user's email is not verified, navigate to email verification screen
             Navigator.pushReplacementNamed(context, '/emailVerification');

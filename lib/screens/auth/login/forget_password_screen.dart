@@ -7,7 +7,7 @@ import 'package:medical_hub/main.dart';
 
 import 'package:medical_hub/screens/auth/login/validation_hub.dart';
 import 'package:medical_hub/screens/auth/login/widgets.dart';
-import 'package:medical_hub/screens/custom_widgets.dart';
+import 'package:medical_hub/widgets/custom_widgets.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});

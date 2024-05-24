@@ -20,7 +20,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   final FocusNode _focusNode = FocusNode();
   bool _isTyping = false;
   bool _isTapped = false;
-  List<String> _searchList = [];
+  final List<String> _searchList = [];
 
   @override
   void initState() {
@@ -132,10 +132,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       controller: _textEditingController,
                       onChanged: (value) {
                         _searchList.clear();
-                        List<String> _currentList = widget.categoryName == null
+                        List<String> currentList = widget.categoryName == null
                             ? doctorTypes.keys.toList()
                             : doctorTypes[widget.categoryName]!.toList();
-                        for (String catName in _currentList) {
+                        for (String catName in currentList) {
                           if (catName
                               .toLowerCase()
                               .contains(value.trim().toLowerCase())) {

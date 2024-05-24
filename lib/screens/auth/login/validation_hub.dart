@@ -20,4 +20,17 @@ class ValidationHub {
   bool isPasswordValid(String password) {
     return RegExp(r'^.{8,}$').hasMatch(password);
   }
+
+  // for validatin phone format
+  bool validatePhoneNumber(String phoneNumber) {
+    // Define the regular expression pattern
+    RegExp regex = RegExp(r'^03\d{9}$');
+
+    // Check if the provided phone number matches the pattern
+    if (regex.hasMatch(phoneNumber)) {
+      return true; // Valid phone number
+    } else {
+      return false; // Invalid phone number
+    }
+  }
 }

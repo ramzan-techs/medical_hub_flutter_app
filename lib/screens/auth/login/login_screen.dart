@@ -5,11 +5,14 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_hub/api/apis.dart';
+import 'package:medical_hub/api/doctor_apis.dart';
 import 'package:medical_hub/main.dart';
 
 import 'package:medical_hub/screens/auth/login/validation_hub.dart';
 
-import 'package:medical_hub/screens/custom_widgets.dart';
+import 'package:medical_hub/widgets/custom_widgets.dart';
+import 'package:medical_hub/screens/doctor/doctor_home_nav.dart';
+import 'package:medical_hub/screens/user/user_home_nav.dart';
 
 import 'widgets.dart';
 
@@ -54,7 +57,15 @@ class _LoginScreenState extends State<LoginScreen> {
       final userCredential =
           result['userCredential'] as UserCredential; // Cast to UserCredential
       if (userCredential.user!.emailVerified) {
-        Navigator.pushReplacementNamed(context, '/home');
+        final type = await APIs.getUserType();
+        if (type == "user") {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => const UserHomeNav()));
+        } else if (type == "doctor") {
+          await DoctorApis.getDoctorInfo();
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => const DoctorHomeNav()));
+        }
       } else {
         Navigator.pushReplacementNamed(context, '/emailVerification');
       }

@@ -6,7 +6,9 @@ import 'package:medical_hub/api/apis.dart';
 import 'package:medical_hub/main.dart';
 import 'package:medical_hub/screens/auth/login/widgets.dart';
 
-import 'package:medical_hub/screens/custom_widgets.dart';
+import 'package:medical_hub/widgets/custom_widgets.dart';
+import 'package:medical_hub/screens/doctor/doctor_home_nav.dart';
+import 'package:medical_hub/screens/user/user_home_nav.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({
@@ -23,6 +25,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     await APIs.user.reload();
   }
 
+  bool _isContinueClicked = false;
   Future<void> _sendEmail() async {
     await APIs.sendVerificationEmail();
   }
@@ -129,10 +132,27 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
+                      setState(() {
+                        _isContinueClicked = true;
+                      });
                       await _reloadUserInfo();
                       if (APIs.user.emailVerified) {
-                        Navigator.pushReplacementNamed(context, '/home');
+                        final type = await APIs.getUserType();
+                        if (type == "user") {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const UserHomeNav()));
+                        } else if (type == "doctor") {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const DoctorHomeNav()));
+                        }
                       } else {
+                        setState(() {
+                          _isContinueClicked = false;
+                        });
                         CustomWidget.showSnackBar(
                             context, 'Verify Email First!');
                       }
@@ -145,13 +165,19 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                         mq.height * 0.06,
                       ),
                     ),
-                    child: const Text(
-                      'Continue',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2),
-                    ),
+                    child: _isContinueClicked
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text(
+                            'Continue',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2),
+                          ),
                   ),
                 ),
                 const SizedBox(
